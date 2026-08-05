@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { AuthModule } from '../auth/auth.module';
+import { TasksController } from './tasks.controller';
+import { TasksGateway } from './tasks.gateway';
+import { TasksService } from './tasks.service';
+
+@Module({
+  imports: [AuthModule], // re-exports JwtModule, needed by TasksGateway
+  controllers: [TasksController],
+  providers: [TasksService, TasksGateway],
+})
+export class TasksModule {}
