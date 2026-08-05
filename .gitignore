@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+**/node_modules/
+
+# build output
+dist/
+build/
+**/dist/
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+*.env
+!.env.example
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# prisma
+backend/prisma/migrations/dev.db
+
+# local tooling config (Claude Code), not part of the deliverable
+.claude/
+
+# misc stray files
+1ўexport
