@@ -1,0 +1,155 @@
+/* Deliberately minimal — the assignment cares about working logic, not visual polish. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f7fa;
+  color: #1f2328;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #f0f3f6;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input {
+  padding: 8px 10px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 320px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.auth-form__error {
+  color: #cf222e;
+  font-size: 13px;
+  margin: 0;
+}
+
+.tasks-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.tasks-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.task-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.task-form input {
+  flex: 1;
+}
+
+.task-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.task-column {
+  background: #fff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 200px;
+}
+
+.task-column__title {
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 12px 0;
+}
+
+.task-column__count {
+  color: #6e7781;
+  font-weight: normal;
+}
+
+.task-column__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-column__empty {
+  color: #6e7781;
+  font-size: 13px;
+}
+
+.task-card {
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 10px;
+  background: #f6f8fa;
+}
+
+.task-card__title {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.task-card__description {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #57606a;
+}
+
+.task-card__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.task-card__delete {
+  color: #cf222e;
+}
