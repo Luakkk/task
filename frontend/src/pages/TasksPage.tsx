@@ -3,8 +3,9 @@ import { FormEvent, useState } from 'react';
 import { TaskColumn } from '../components/TaskColumn';
 import { useAuth } from '../context/AuthContext';
 import { useTaskSocket } from '../hooks/useTaskSocket';
+import { getErrorMessage } from '../api/client';
 import { createTask, deleteTask, fetchTasks, updateTask } from '../api/tasks';
-import { nextStatus, Task, TASK_STATUSES } from '../types/task';
+import { Task, TASK_STATUSES, TaskStatus } from '../types/task';
 
 const TASKS_QUERY_KEY = ['tasks'];
 
@@ -20,8 +21,6 @@ export function TasksPage() {
     queryFn: fetchTasks,
   });
 
-  // Any real-time event just invalidates the list — the simplest correct
-  // way to stay in sync with other tabs/browsers on the same account.
   useTaskSocket(token, () => {
     queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY });
   });
@@ -38,17 +37,15 @@ export function TasksPage() {
       await createTask({ title: title.trim() });
       setTitle('');
       queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY });
-    } catch (err: any) {
-      setFormError(err.response?.data?.message?.[0] ?? 'Could not create task');
+    } catch (err) {
+      setFormError(getErrorMessage(err, 'Could not create task'));
     } finally {
       setIsCreating(false);
     }
   };
 
-  const handleAdvance = async (task: Task) => {
-    const next = nextStatus(task.status);
-    if (!next) return;
-    await updateTask(task.id, { status: next });
+  const handleChangeStatus = async (task: Task, status: TaskStatus) => {
+    await updateTask(task.id, { status });
     queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY });
   };
 
@@ -60,7 +57,10 @@ export function TasksPage() {
   return (
     <div className="tasks-page">
       <header className="tasks-page__header">
-        <h1>OpKit — Tasks</h1>
+        <h1>
+          <span className="brand-mark">Op</span>
+          Tasks
+        </h1>
         <button type="button" onClick={logout}>
           Log out
         </button>
@@ -73,7 +73,7 @@ export function TasksPage() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <button type="submit" disabled={isCreating}>
+        <button type="submit" className="btn-primary" disabled={isCreating}>
           Add task
         </button>
       </form>
@@ -88,7 +88,7 @@ export function TasksPage() {
               key={status}
               status={status}
               tasks={tasks.filter((t) => t.status === status)}
-              onAdvance={handleAdvance}
+              onChangeStatus={handleChangeStatus}
               onDelete={handleDelete}
             />
           ))}

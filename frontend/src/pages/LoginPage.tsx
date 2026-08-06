@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getErrorMessage } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
 export function LoginPage() {
@@ -17,8 +18,8 @@ export function LoginPage() {
     try {
       await login(email, password);
       navigate('/tasks');
-    } catch (err: any) {
-      setError(err.response?.data?.message ?? 'Login failed');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Login failed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -27,6 +28,7 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="brand-mark">Op</div>
         <h1>Sign in to OpKit</h1>
         <label>
           Email
@@ -42,7 +44,7 @@ export function LoginPage() {
           />
         </label>
         {error && <p className="auth-form__error">{error}</p>}
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" className="btn-primary" disabled={isSubmitting}>
           {isSubmitting ? 'Signing in…' : 'Sign in'}
         </button>
         <p>

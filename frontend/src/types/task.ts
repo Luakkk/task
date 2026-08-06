@@ -18,9 +18,9 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
   DONE: 'Done',
 };
 
-/** The status a task moves to when you click "next" on its card. */
-export function nextStatus(status: TaskStatus): TaskStatus | null {
-  const order: TaskStatus[] = ['TODO', 'IN_PROGRESS', 'DONE'];
-  const index = order.indexOf(status);
-  return index < order.length - 1 ? order[index + 1] : null;
-}
+// STATUS_SLUGS для CSS-классов, STATUS_LABELS для текста на экране
+export const STATUS_SLUGS: Record<TaskStatus, string> = {
+  TODO: 'todo',
+  IN_PROGRESS: 'in-progress',
+  DONE: 'done',
+};

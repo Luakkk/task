@@ -18,7 +18,7 @@ export function clearToken(): void {
   localStorage.removeItem(TOKEN_KEY);
 }
 
-// Attach the JWT to every request once it exists.
+ // Токен подставляется в заголовок автоматически
 apiClient.interceptors.request.use((config) => {
   const token = getStoredToken();
   if (token) {
@@ -27,13 +27,27 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// A 401 means the token is missing/expired — drop it so the app redirects to /login.
+// На 401 стираем токен дальше ProtectedRoute сам редиректнёт на /login
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
+  (error: unknown) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
       clearToken();
     }
     return Promise.reject(error);
   },
 );
+
+interface ApiErrorBody {
+  message?: string | string[];
+}
+
+// Nest присылает ошибку то строкой, то массивом строк здесь приводим к одному виду
+export function getErrorMessage(err: unknown, fallback: string): string {
+  if (axios.isAxiosError<ApiErrorBody>(err)) {
+    const message = err.response?.data?.message;
+    if (Array.isArray(message)) return message[0] ?? fallback;
+    if (typeof message === 'string') return message;
+  }
+  return fallback;
+}

@@ -1,24 +1,25 @@
-import { nextStatus, Task } from '../types/task';
+import { STATUS_LABELS, Task, TASK_STATUSES, TaskStatus } from '../types/task';
 
 interface Props {
   task: Task;
-  onAdvance: (task: Task) => void;
+  onChangeStatus: (task: Task, status: TaskStatus) => void;
   onDelete: (task: Task) => void;
 }
 
-export function TaskCard({ task, onAdvance, onDelete }: Props) {
-  const next = nextStatus(task.status);
+export function TaskCard({ task, onChangeStatus, onDelete }: Props) {
+// Кнопка на каждый статус, кроме текущего, можно прыгнуть в любой, не только вперёд
+  const otherStatuses = TASK_STATUSES.filter((status) => status !== task.status);
 
   return (
     <div className="task-card">
       <p className="task-card__title">{task.title}</p>
       {task.description && <p className="task-card__description">{task.description}</p>}
       <div className="task-card__actions">
-        {next && (
-          <button type="button" onClick={() => onAdvance(task)}>
-            → {next.replace('_', ' ')}
+        {otherStatuses.map((status) => (
+          <button key={status} type="button" onClick={() => onChangeStatus(task, status)}>
+            → {STATUS_LABELS[status]}
           </button>
-        )}
+        ))}
         <button type="button" className="task-card__delete" onClick={() => onDelete(task)}>
           Delete
         </button>
