@@ -19,12 +19,8 @@ export interface TaskEventPayload {
   timestamp: string;
 }
 
-/**
- * Real-time layer. Every socket authenticates with the same JWT used for
- * the REST API (sent as `auth.token` on the client) and is placed into a
- * room scoped to its user id — so "broadcast to all connected clients"
- * means "every tab/browser logged into this account", not the whole server.
- */
+/// События приходят только тем, кто залогинен в тот же аккаунт, а не всем подряд
+
 @WebSocketGateway({
   cors: {
     origin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
@@ -61,7 +57,7 @@ export class TasksGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client ${client.id} disconnected`);
   }
 
-  /** Called by TasksService after every mutation. */
+  // Вызывается из TasksService после каждого изменения задачи
   emitToUser(userId: string, event: TaskEventName, payload: TaskEventPayload) {
     this.server.to(this.roomFor(userId)).emit(event, payload);
   }

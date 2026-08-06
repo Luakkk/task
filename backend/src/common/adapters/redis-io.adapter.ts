@@ -4,12 +4,8 @@ import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient, RedisClientType } from 'redis';
 import { ServerOptions } from 'socket.io';
 
-/**
- * Backs Socket.IO with Redis pub/sub so real-time events fan out correctly
- * across multiple API instances, not just within a single process.
- * Falls back to the in-memory adapter (default Nest behaviour) if Redis
- * is unreachable, so local development never hard-fails because of it.
- */
+// Без Redis работает просто как один процесс
+// Redis понадобится только если backend когда-нибудь будет в нескольких инстансах
 export class RedisIoAdapter extends IoAdapter {
   private readonly logger = new Logger(RedisIoAdapter.name);
   private adapterConstructor?: ReturnType<typeof createAdapter>;

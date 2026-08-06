@@ -61,7 +61,7 @@ export class TasksService {
     });
   }
 
-  /** Loads the task and throws unless it belongs to userId. */
+// Если задачи нет 404, если есть но чужая 403
   private async assertOwnership(userId: string, taskId: string): Promise<Task> {
     const task = await this.prisma.task.findUnique({ where: { id: taskId } });
     if (!task) {

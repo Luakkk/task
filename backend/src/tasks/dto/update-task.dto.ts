@@ -6,8 +6,9 @@ export class UpdateTaskDto {
   @IsString()
   @IsNotEmpty({ message: 'title must not be empty' })
   @MaxLength(200)
-  title?: string;
-
+  title?: string;                            
+  // Если title не передали проходит Если передали пустым то выдает 400
+  
   @IsOptional()
   @IsString()
   description?: string;
