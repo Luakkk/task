@@ -11,11 +11,7 @@ export interface TaskSocketEvent {
 
 type TaskEventName = 'task:created' | 'task:updated' | 'task:deleted';
 
-/**
- * Opens one authenticated Socket.IO connection and calls `onEvent` for every
- * task:created / task:updated / task:deleted event the server broadcasts to
- * this account. Reconnects automatically if the token changes.
- */
+// Один сокет, слушает 3 события, переоткрывается, если поменялся токен
 export function useTaskSocket(token: string | null, onEvent: (event: TaskEventName, payload: TaskSocketEvent) => void) {
   useEffect(() => {
     if (!token) return;
