@@ -1,4 +1,22 @@
-/* Deliberately minimal — the assignment cares about working logic, not visual polish. */
+/* Простой дизайн — свой акцентный цвет и отступы вместо рамок везде */
+
+:root {
+  --bg: #f4f3fb;
+  --surface: #ffffff;
+  --border: #e4e2f2;
+  --text: #201c3a;
+  --text-muted: #726e8c;
+  --accent: #5b45e0;
+  --accent-hover: #4934c9;
+  --danger: #d63a5c;
+
+  --status-todo: #a3a0c4;
+  --status-in-progress: #e0a13c;
+  --status-done: #3aab72;
+
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(32, 28, 58, 0.06), 0 8px 24px rgba(32, 28, 58, 0.05);
+}
 
 * {
   box-sizing: border-box;
@@ -7,34 +25,63 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f5f7fa;
-  color: #1f2328;
+  background: var(--bg);
+  color: var(--text);
 }
 
 button {
   cursor: pointer;
-  border: 1px solid #d0d7de;
-  background: #fff;
-  border-radius: 6px;
-  padding: 6px 12px;
+  border: none;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 14px;
   font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 button:hover {
-  background: #f0f3f6;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
 }
 
 input {
-  padding: 8px 10px;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 69, 224, 0.15);
+}
+
+/* ---------- страницы входа/регистрации ---------- */
 
 .auth-page {
   display: flex;
@@ -46,44 +93,88 @@ input {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   width: 320px;
-  padding: 24px;
-  background: #fff;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
+  padding: 32px;
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.auth-form .brand-mark {
+  margin-bottom: 4px;
+}
+
+.auth-form h1 {
+  font-size: 20px;
+  margin: 0 0 4px 0;
 }
 
 .auth-form label {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .auth-form__error {
-  color: #cf222e;
+  color: var(--danger);
   font-size: 13px;
   margin: 0;
 }
 
+.auth-form p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.auth-form a {
+  color: var(--accent);
+}
+
+/* ---------- страница задач ---------- */
+
 .tasks-page {
-  max-width: 1000px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 32px 24px;
 }
 
 .tasks-page__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.tasks-page__header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  margin: 0;
 }
 
 .task-form {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .task-form input {
@@ -94,62 +185,101 @@ input {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  margin-top: 20px;
 }
 
 .task-column {
-  background: #fff;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  padding: 12px;
-  min-height: 200px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px;
+  min-height: 180px;
+  box-shadow: var(--shadow);
+}
+
+.task-column--todo {
+  /* Цвет полоски задачи наследуется от колонки через CSS-переменную, без JS */
+  --column-accent: var(--status-todo);
+}
+
+.task-column--in-progress {
+  --column-accent: var(--status-in-progress);
+}
+
+.task-column--done {
+  --column-accent: var(--status-done);
 }
 
 .task-column__title {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 600;
   display: flex;
-  justify-content: space-between;
-  margin: 0 0 12px 0;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px 0;
+}
+
+.task-column__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--column-accent);
+  flex-shrink: 0;
 }
 
 .task-column__count {
-  color: #6e7781;
-  font-weight: normal;
+  margin-left: auto;
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .task-column__list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .task-column__empty {
-  color: #6e7781;
+  color: var(--text-muted);
   font-size: 13px;
 }
 
 .task-card {
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
-  padding: 10px;
-  background: #f6f8fa;
+  border-left: 3px solid var(--column-accent);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--bg);
 }
 
 .task-card__title {
   margin: 0 0 4px 0;
   font-weight: 600;
+  font-size: 14px;
 }
 
 .task-card__description {
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   font-size: 13px;
-  color: #57606a;
+  color: var(--text-muted);
 }
 
 .task-card__actions {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.task-card__actions button {
+  font-size: 12px;
+  font-weight: 400;
+  padding: 5px 9px;
+  box-shadow: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .task-card__delete {
-  color: #cf222e;
+  color: var(--danger);
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
